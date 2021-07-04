@@ -1,8 +1,10 @@
 ---
 title: Infinite Scroll Util
-date: '2015-05-28T22:40:32.169Z'
-description: This is a custom description for SEO and Open Graph purposes, rather than the default generated excerpt. Simply add a description field to the frontmatter.
-category: TypeScript
+date: 2021-03-06 22:03:80
+category: react
+description: 무한 스크롤은 사용자가 페이지를 아래로 스크롤 할 때 콘텐츠를 지속적으로 로드 하는 기술이다. `Pagenation`과 비슷하지만 모바일에 특화된 기술이라고 볼 수 있다.
+thumbnail: { thumbnailSrc }
+draft: false
 ---
 
 ![infinite-scroll-shift](../assets/infinite-scroll-shift.png)
@@ -13,8 +15,6 @@ category: TypeScript
 스크롤을 내리며 화면의 끝에 닿으면 비동기 적으로 콘텐츠를 로드하고, 이는 사용자 경험을 향상시켜준다.
 
 무한 스크롤을 구현하는 방법에는 여러가지 방법이 있다. 전통적인? 방법은 `scroll` 윈도우 객체 또는 특정 `div`에 eventListenr를 추가하고, `div`가 화면 끝에 닿았을 때 data를 새로 로드하는 방식이다.
-
-<div class="attach">JavaScript</div>
 
 ```JavaScript
 function InfiniteScroll () {
@@ -29,14 +29,14 @@ function InfiniteScroll () {
     const clientHeight = documentElement.clientHeight;
     if (scrollTop + clientHeight >= scrollHeight) {
         fetchData
-     }
+    }
     };
 
     useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
         window.removeEventListener("scroll", handleScroll);
-     };
+    };
     },[]);
 }
 ```
@@ -60,39 +60,40 @@ function InfiniteScroll () {
 
 먼저, `useTargetObserver`이라는 Custom Hook을 생성한다. target을 `IntersctionObserver`로 감지해서 root(viewport)와 겹치면 `isInterseting` 이 true로 변경된다.
 
-<div class="attach">typescript</div>
-
 ```typescript
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
 const defaultOptions: IntersectionObserverInit = {
   threshold: 0.3,
-};
+}
 
 export function useTargetObserver<T extends Element>(
   customOptions?: IntersectionObserverInit,
-  target?: React.RefObject<T>,
+  target?: React.RefObject<T>
 ): boolean {
   const option = {
     ...defaultOptions,
     customOptions,
-  };
-  const [isIntersecting, setIntersecting] = useState(false);
-  const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-    setIntersecting(entries[0].isIntersecting);
-  }, option);
+  }
+  const [isIntersecting, setIntersecting] = useState(false)
+  const observer = new IntersectionObserver(
+    (entries: IntersectionObserverEntry[]) => {
+      setIntersecting(entries[0].isIntersecting)
+    },
+    option
+  )
 
   useEffect(() => {
     if (target?.current) {
-      observer.observe(target.current);
+      observer.observe(target.current)
     }
 
     return () => {
-      observer.disconnect();
-    };
-  }, [observer, target]);
+      observer.disconnect()
+    }
+  }, [observer, target])
 
-  return isIntersecting;
+  return isIntersecting
 }
 ```
 
@@ -104,8 +105,6 @@ export function useTargetObserver<T extends Element>(
 
 ### Common component
 
-<div class="attach">JavaScript</div>
-
 ```javascript
 interface InfiniteScrollProps {
   children: ReactNode;
@@ -116,46 +115,45 @@ interface InfiniteScrollProps {
 }
 
 export const InfiniteScroll = (props: InfiniteScrollProps) => {
-  const { pageNumber, totalPageCount, trigger, isLoaded } = props;
+  const { pageNumber, totalPageCount, trigger, isLoaded } = props
 
-  const target = useRef < HTMLDivElement > null;
-  const isIntersecting = useTargetObserver < HTMLDivElement > ({ threshold: 1 }, target);
+  const target = useRef < HTMLDivElement > null
+  const isIntersecting =
+    useTargetObserver < HTMLDivElement > ({ threshold: 1 }, target)
 
-  const needMoreList = totalPageCount > pageNumber;
+  const needMoreList = totalPageCount > pageNumber
 
   useEffect(() => {
     if (isIntersecting && needMoreList) {
-      trigger();
+      trigger()
     }
-  }, [isIntersecting, needMoreList]);
+  }, [isIntersecting, needMoreList])
 
   return (
     <>
       {props.children}
       {isLoaded && needMoreList && <div ref={target} />} // loading or bottom element
     </>
-  );
-};
+  )
+}
 ```
 
 ### 사용부
 
-<div class="attach">JavaScript</div>
-
 ```javascript
 const SampleList = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const { pageNumber, totalPageCount } = useSelector(selector);
-  const list = useSelector(list);
+  const { pageNumber, totalPageCount } = useSelector(selector)
+  const list = useSelector(list)
 
   useEffect(() => {
-    dispatch(fetch());
+    dispatch(fetch())
 
     return () => {
-      dispatch(clear());
-    };
-  }, []);
+      dispatch(clear())
+    }
+  }, [])
 
   return (
     <InfiniteScroll
@@ -164,12 +162,12 @@ const SampleList = () => {
       totalPageCount={totalPageCount}
       trigger={() => dispatch(fetch())}
     >
-      {list.map((item) => (
+      {list.map(item => (
         <div>{item}</div>
       ))}
     </InfiniteScroll>
-  );
-};
+  )
+}
 ```
 
 활용을 높이기 위해 Component를 생성하고 Component에 list등 원하는 data를 children으로 넘겨주면 작동하게 제작해보았다.
