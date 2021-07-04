@@ -2,11 +2,10 @@
   width: auto;
   padding: 0 25px;
   @include pc {
-    width: 282px;
-    padding: 0;
+    width: 300px;
+    padding-left: 12px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
   }
   &--item {
     display: inline-block;
@@ -20,11 +19,15 @@
     transition: 0.2s;
     font-weight: 500;
     font-size: 14px;
+    transition: 0.3s transform cubic-bezier(0.155, 1.105, 0.295, 1.12), 0.3s box-shadow,
+      0.3s -webkit-transform cubic-bezier(0.155, 1.105, 0.295, 1.12);
+
     &:hover {
-      transform: translate3d(0, -1px, 0);
+      transform: scale(1.1);
       background-color: $border-gray;
       color: $theme-green;
     }
+
     &.active {
       background-color: $theme-green;
       color: $pale-green;
@@ -33,6 +36,7 @@
         color: $pale-green;
       }
     }
+
     &:last-child {
       margin-right: 25px;
     }

@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `GATSBY BLOG`,
+    title: `PROMM DEVLOG`,
     author: {
       name: `jeongyun.lee`,
       summary: `FE Engineer`,
@@ -11,12 +11,12 @@ module.exports = {
     description: `blog starter`,
     siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
     social: {
-      git: `https://github.com`,
+      git: `https://github.com/leeyun1533`,
       instagram: `https://www.instagram.com`,
       twitter: `https://twitter.com/?lang=ko`,
       linkdein: `https://kr.linkedin.com`,
       facebook: `https://facebook.com`,
-      mail: `admin@gmail.com`,
+      mail: `leeyun1533@gmail.com`,
     },
     commentInfo: {
       service: 'utterances', // select utterances or disqus
@@ -65,6 +65,7 @@ module.exports = {
           `gatsby-remark-prismjs`,
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-smartypants`,
+          'gatsby-remark-emoji',
         ],
       },
     },
@@ -140,6 +141,7 @@ module.exports = {
     },
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-gatsby-cloud`,
+
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
